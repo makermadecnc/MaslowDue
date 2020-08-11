@@ -77,11 +77,11 @@ settings_t settings;
     .z_PID_Imax = default_zImax,
 
     .chainOverSprocket = default_chainOverSprocket,
-    .machineWidth = default_machineWidth,   /* Maslow specific settings */
-    .machineHeight = default_machineHeight,
     .distBetweenMotors = default_distBetweenMotors,
 
     .motorOffsetY = default_motorOffsetY,
+    .machineWidth = default_machineWidth,
+    .machineHeight = default_machineHeight,
     .chainSagCorrection = default_chainSagCorrection,
     .leftChainTolerance = default_leftChainTolerance,
     .rightChainTolerance = default_rightChainTolerance,
@@ -94,7 +94,8 @@ settings_t settings;
     .XcorrScaling = default_XcorrScaling,
     .YcorrScaling = default_YcorrScaling,
 
-    .zTravelMin = default_ZTravelMin };
+    .zTravelMin = default_ZTravelMin,
+    .simpleKinematics = default_SimpleKinematics };
 
 #else
 
@@ -400,7 +401,7 @@ uint8_t settings_store_global_setting(uint8_t parameter, float value) {
 
         case GRBL_CHAIN_LENGTH: settings.chainLength = (float)value ; break;
         case GRBL_Z_TRAVEL_MIN: settings.zTravelMin = (float)value; break;
-        case GRBL_KINEMATICS_MODE: settings.kinematicsMode = int_value; break;
+        case GRBL_KINEMATICS_SIMPLE: settings.simpleKinematics = int_value; break;
       #endif
 
       default:

@@ -120,7 +120,8 @@
   #define default_XcorrScaling        (1.003922)
   #define default_YcorrScaling        (1.002611)
   #define default_ZTravelMin          (-0.5*25.4)
-  #define default_KinematicsMode      KINEMATICS_MODE_FORWARD
+
+  #define default_SimpleKinematics    (0)
 
 #endif
 

@@ -51,7 +51,7 @@
   #define GRBL_ROTATION_DISK_RADIUS             90
   #define GRBL_CHAIN_LENGTH                     91
   #define GRBL_Z_TRAVEL_MIN                     92
-  #define GRBL_KINEMATICS_MODE                  93
+  #define GRBL_KINEMATICS_SIMPLE                93
 #else
   #define GRBL_VERSION_BUILD "20180813.Mega"
   #include <avr/io.h>

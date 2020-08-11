@@ -29,8 +29,8 @@
 
   // Main kinematics functions.
   void  triangularInverse(float xTarget, float yTarget, float* aChainLength, float* bChainLength);
-  void  forwardKinematics(float chainALength, float chainBLength, float* xPos, float* yPos);
-  void  triangular(float aChainLength, float bChainLength, float *x,float *y );
+  void  triangularForward(float chainALength, float chainBLength, float* xPos, float* yPos);
+  void  triangularSimple(float aChainLength, float bChainLength, float *x,float *y );
   void _recomputeGeometry(void);
 
   // Various cached pre-computed values.
@@ -38,7 +38,7 @@
   float _xCordOfMotor;
   float _yCordOfMotor;
 
-  // Cached between forwardKinematic computations to provide a good guess (performance).
+  // Cached between triangularForward computations to provide a good guess (performance).
   float _xLastPosition;
   float _yLastPosition;
 #endif
@@ -415,10 +415,10 @@ uint8_t system_check_travel_limits(float *target)
       Serial.println(*y);
     #endif
 
-    if (settings.kinematicsMode == KINEMATICS_MODE_TRIANGULAR) {
-      return triangular(aChainLength, bChainLength, x, y);
+    if (settings.simpleKinematics) {
+      return triangularSimple(aChainLength, bChainLength, x, y);
     } else {
-      return forwardKinematics(aChainLength, bChainLength, x, y);
+      return triangularForward(aChainLength, bChainLength, x, y);
     }
   }
 
@@ -448,7 +448,7 @@ uint8_t system_check_travel_limits(float *target)
 
   // Maslow math - coordinate system tranformation
   // calculate machine coordinate (x-y) postion from chain lengths in mm (pos in mm)
-  void triangular(float aChainLength, float bChainLength, float *x,float *y )
+  void triangularSimple(float aChainLength, float bChainLength, float *x,float *y )
   {
     //----------------------------------------------------------------------> arbitrary triangle method:
     //                   cos(B) = ((b^2 + c^2 - a^2) / (2 * b * c))
@@ -480,11 +480,11 @@ uint8_t system_check_travel_limits(float *target)
      *y = (float) y_pos;
   }
 
-  // forwardKinematics() are able to compensate for chain sag, an improvement on triangular().
+  // triangularForward() are able to compensate for chain sag, an improvement on triangular().
   // It takes an iterative approach to solving for chain sag, attempting to achieve
   // the desired KINEMATICS_MAX_ERR. It is less performant, and care should be used to avoid
   // pegging the limited Arduino CPU.
-  void forwardKinematics(float chainALength, float chainBLength, float* xPos, float* yPos)
+  void triangularForward(float chainALength, float chainBLength, float* xPos, float* yPos)
   {
     float guessLengthA = 0, guessLengthB = 0;
     float xGuess = *xPos, yGuess = *yPos;
