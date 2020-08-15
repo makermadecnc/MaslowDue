@@ -329,17 +329,7 @@ float system_convert_axis_steps_to_mpos(int32_t *steps, uint8_t idx)
       pos = steps[idx]/settings.steps_per_mm[idx];
     }
   #else
-    #ifdef MASLOWCNC
-      if (idx==X_AXIS) {
-        pos = (float)system_convert_maslow_to_x_axis_steps(steps) / settings.steps_per_mm[LEFT_MOTOR];
-      } else if (idx==Y_AXIS) {
-        pos = (float)system_convert_maslow_to_y_axis_steps(steps) / settings.steps_per_mm[RIGHT_MOTOR];
-      } else {
-        pos = steps[idx]/settings.steps_per_mm[idx];
-      }
-    #else
-      pos = steps[idx]/settings.steps_per_mm[idx];
-    #endif
+    pos = steps[idx]/settings.steps_per_mm[idx];
   #endif
   return(pos);
 }
@@ -347,10 +337,19 @@ float system_convert_axis_steps_to_mpos(int32_t *steps, uint8_t idx)
 
 void system_convert_array_steps_to_mpos(float *position, int32_t *steps)
 {
-  uint8_t idx;
-  for (idx=0; idx<N_AXIS; idx++) {
-    position[idx] = system_convert_axis_steps_to_mpos(steps, idx);
-  }
+  #ifdef MASLOWCNC
+    // Optimization: do not call system_convert_maslow_to_xy_steps multiple times in a loop!
+    int32_t x_steps, y_steps;
+    system_convert_maslow_to_xy_steps(steps, &x_steps, &y_steps);
+    position[X_AXIS] = (float)x_steps / settings.steps_per_mm[LEFT_MOTOR];
+    position[Y_AXIS] = (float)x_steps / settings.steps_per_mm[RIGHT_MOTOR];
+    position[Z_AXIS] = (float)steps[Z_AXIS] / settings.steps_per_mm[Z_AXIS];
+  #else
+    uint8_t idx;
+    for (idx=0; idx<N_AXIS; idx++) {
+      position[idx] = system_convert_axis_steps_to_mpos(steps, idx);
+    }
+  #endif
   return;
 }
 
@@ -551,20 +550,6 @@ uint8_t system_check_travel_limits(float *target)
 
     *x_steps = (int32_t) _xLastPosition * settings.steps_per_mm[X_AXIS];
     *y_steps = (int32_t) _yLastPosition * settings.steps_per_mm[Y_AXIS];
-  }
-
-  int32_t system_convert_maslow_to_x_axis_steps(int32_t *steps)
-  {
-    int32_t x_steps, y_steps;
-    system_convert_maslow_to_xy_steps(steps, &x_steps, &y_steps);
-    return(x_steps);
-  }
-
-  int32_t system_convert_maslow_to_y_axis_steps(int32_t *steps)
-  {
-    int32_t x_steps, y_steps;
-    system_convert_maslow_to_xy_steps(steps, &x_steps, &y_steps);
-    return(y_steps);
   }
 
   // calculate left and right (LEFT_MOTOR/RIGHT_MOTOR) chain lengths from X-Y cartesian coordinates  (in mm)

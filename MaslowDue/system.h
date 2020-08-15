@@ -18,7 +18,7 @@
   along with Grbl.  If not, see <http://www.gnu.org/licenses/>.
 
     reworked for Maslow-Due (Arduino Due) by Larry D O'Cull  Mar 2019
-    
+
 */
 
 #ifndef system_h
@@ -121,7 +121,7 @@
 // Define global system variables
 typedef struct {
   uint8_t state;               // Tracks the current system state of Grbl.
-  uint8_t abort;               // System abort flag. Forces exit back to main loop for reset.             
+  uint8_t abort;               // System abort flag. Forces exit back to main loop for reset.
   uint8_t suspend;             // System suspend bitflag variable that manages holds, cancels, and safety door.
   uint8_t soft_limit;          // Tracks soft limit errors for the state machine. (boolean)
   uint8_t step_control;        // Governs the step segment generator depending on system state.
@@ -191,8 +191,7 @@ void system_convert_array_steps_to_mpos(float *position, int32_t *steps);
 
 // Maslow CNC calculation only. Returns x or y-axis "steps" based on Maslow motor steps.
 #ifdef MASLOWCNC
-  int32_t system_convert_maslow_to_x_axis_steps(int32_t *steps);
-  int32_t system_convert_maslow_to_y_axis_steps(int32_t *steps);
+  void system_convert_maslow_to_xy_steps(int32_t *steps, int32_t *x_steps, int32_t *y_steps);
 #endif
 
 // Checks and reports if target array exceeds machine travel limits.
