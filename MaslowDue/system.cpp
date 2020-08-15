@@ -583,37 +583,65 @@ uint8_t system_check_travel_limits(float *target)
       //Set up variables
       double Chain1Angle = 0, Chain2Angle = 0;
       double Chain1AroundSprocket = 0, Chain2AroundSprocket = 0;
+      double xTangent1 = 0, yTangent1 = 0, xTangent2 = 0, yTangent2 = 0;
 
       //Calculate the chain angles from horizontal, based on if the chain connects to the sled from the top or bottom of the sprocket
+      double yDiff = _yCordOfMotor - yTarget;
       if(settings.chainOverSprocket == 1){
-        Chain1Angle = asin((_yCordOfMotor - yTarget)/Motor1Distance) + asin(_sprocketRadius/Motor1Distance);
-        Chain2Angle = asin((_yCordOfMotor - yTarget)/Motor2Distance) + asin(_sprocketRadius/Motor2Distance);
+        Chain1Angle = asin(yDiff/Motor1Distance) + asin(_sprocketRadius/Motor1Distance);
+        Chain2Angle = asin(yDiff/Motor2Distance) + asin(_sprocketRadius/Motor2Distance);
+
         Chain1AroundSprocket = _sprocketRadius * Chain1Angle;
         Chain2AroundSprocket = _sprocketRadius * Chain2Angle;
+
+        xTangent1 = -1.0 * _xCordOfMotor + _sprocketRadius * sin(Chain1Angle);
+        yTangent1 = _yCordOfMotor + _sprocketRadius * cos(Chain1Angle);
+
+        xTangent2 = _xCordOfMotor - _sprocketRadius * sin(Chain2Angle);
+        yTangent2 = _yCordOfMotor + _sprocketRadius * cos(Chain2Angle);
       } else {
-        Chain1Angle = asin((_yCordOfMotor - yTarget)/Motor1Distance) - asin(_sprocketRadius/Motor1Distance);
-        Chain2Angle = asin((_yCordOfMotor - yTarget)/Motor2Distance) - asin(_sprocketRadius/Motor2Distance);
+        Chain1Angle = asin(yDiff/Motor1Distance) - asin(_sprocketRadius/Motor1Distance);
+        Chain2Angle = asin(yDiff/Motor2Distance) - asin(_sprocketRadius/Motor2Distance);
+
         Chain1AroundSprocket = _sprocketRadius * (3.14159 - Chain1Angle);
         Chain2AroundSprocket = _sprocketRadius * (3.14159 - Chain2Angle);
+
+        xTangent1 = -1.0 * _xCordOfMotor - _sprocketRadius * sin(Chain1Angle);
+        yTangent1 = _yCordOfMotor - _sprocketRadius * cos(Chain1Angle);
+
+        xTangent2 = _xCordOfMotor + _sprocketRadius * sin(Chain2Angle);
+        yTangent2 = _yCordOfMotor - _sprocketRadius * cos(Chain2Angle);
       }
+
+      double sledWeight = settings.sledWeight;
+      double chainDensity = 0.14 * 9.8 / 1000; // Newtons / mm
+      double chainElasticity = settings.chainElongationFactor; // mm/mm/Newton
 
       //Calculate the straight chain length from the sprocket to the bit
       double srsqrd = pow(_sprocketRadius,2);
       double Chain1Straight = sqrt(pow(Motor1Distance,2)-srsqrd);
       double Chain2Straight = sqrt(pow(Motor2Distance,2)-srsqrd);
 
-      //Correct the straight chain lengths to account for chain sag
-      double csc = (settings.chainSagCorrection / 1000000000000);
-      Chain1Straight *= (1 + (csc * pow(cos(Chain1Angle),2) * pow(Chain1Straight,2) * pow((tan(Chain2Angle) * cos(Chain1Angle)) + sin(Chain1Angle),2)));
-      Chain2Straight *= (1 + (csc * pow(cos(Chain2Angle),2) * pow(Chain2Straight,2) * pow((tan(Chain1Angle) * cos(Chain2Angle)) + sin(Chain2Angle),2)));
+      // Calculate chain tension
+      double totalWeight = sledWeight + 0.5 * chainDensity * (Chain1Straight + Chain2Straight);
+      double tensionD = (xTangent1*yTangent2-xTangent2*yTangent1-xTangent1*yTarget+xTarget*yTangent1+xTangent2*yTarget-xTarget*yTangent2);
+      double tension1 = - (totalWeight*sqrt(pow(xTangent1-xTarget,2.0)+pow(yTangent1-yTarget,2.0))*(xTangent2-xTarget))/tensionD;
+      double tension2 = (totalWeight*sqrt(pow(xTangent2-xTarget,2.0)+pow(yTangent2-yTarget,2.0))*(xTangent1-xTarget))/tensionD;
+      double horizontalTension = tension1 * (xTarget - xTangent1) / Chain1Straight;
+      double a1 = horizontalTension / chainDensity;
+      double a2 = horizontalTension / chainDensity;
 
-      //Calculate total chain lengths accounting for sprocket geometry and chain sag
-      double Chain1 = Chain1AroundSprocket + Chain1Straight / (1.0f + settings.leftChainTolerance / 100.0f);
-      double Chain2 = Chain2AroundSprocket + Chain2Straight / (1.0f + settings.rightChainTolerance / 100.0f);
+      // Catenary equation: total chain length excluding sprocket geometry, chain tolerance, and chain elasticity
+      double chain1 = sqrt(pow(2*a1*sinh((xTarget-xTangent1)/(2*a1)),2)+pow(yTangent1-yTarget,2));
+      double chain2 = sqrt(pow(2*a2*sinh((xTangent2-xTarget)/(2*a2)),2)+pow(yTangent2-yTarget,2));
+
+      //Calculate total chain lengths accounting for sprocket geometry, chain tolerance, and chain elasticity
+      chain1 = Chain1AroundSprocket + chain1/(1.0f+settings.leftChainTolerance/100.0f)/(1.0f+tension1*chainElasticity);
+      chain2 = Chain2AroundSprocket + chain2/(1.0f+settings.rightChainTolerance/100.0f)/(1.0f+tension2*chainElasticity);
 
       //Subtract of the virtual length which is added to the chain by the rotation mechanism
-      *aChainLength = (float)(Chain1 - settings.rotationDiskRadius);
-      *bChainLength = (float)(Chain2 - settings.rotationDiskRadius);
+      *aChainLength = (float)(chain1 - settings.rotationDiskRadius);
+      *bChainLength = (float)(chain2 - settings.rotationDiskRadius);
   }
 
 #endif

@@ -35,8 +35,12 @@
 #define MASLOWCNC // Default disabled. Uncomment to enable.
 
 #ifdef MASLOWCNC
-  #define GRBL_VERSION_BUILD "20190407.MazDue"
+  #define GRBL_VERSION_BUILD "20200811.MaslowDue"
   #include "Arduino.h"
+
+  // Matches Maslow Classic:
+  #define GRBL_CHAIN_ELONGATION_FACTOR          45
+  #define GRBL_SLED_WEIGHT                      46
 
   #define GRBL_CHAIN_OVER_SPROCKET              80
   #define GRBL_MACHINE_WIDTH                    81

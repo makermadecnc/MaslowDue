@@ -88,8 +88,10 @@ settings_t settings;
     .rotationDiskRadius = default_rotationDiskRadius,
 
     .chainLength = default_chainLength,
+    .chainElongationFactor = default_chainElongationFactor,
     .sledHeight = default_sledHeight,
     .sledWidth = default_sledWidth,
+    .sledWeight = default_SledWeight,
 
     .XcorrScaling = default_XcorrScaling,
     .YcorrScaling = default_YcorrScaling,
@@ -402,6 +404,8 @@ uint8_t settings_store_global_setting(uint8_t parameter, float value) {
         case GRBL_CHAIN_LENGTH: settings.chainLength = (float)value ; break;
         case GRBL_Z_TRAVEL_MIN: settings.zTravelMin = (float)value; break;
         case GRBL_KINEMATICS_SIMPLE: settings.simpleKinematics = int_value; break;
+        case GRBL_SLED_WEIGHT: settings.sledWeight = (float)value; break;
+        case GRBL_CHAIN_ELONGATION_FACTOR: settings.chainElongationFactor = (float)value; break;
       #endif
 
       default:

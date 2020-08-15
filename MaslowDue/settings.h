@@ -145,8 +145,10 @@ typedef struct {
     float rightChainTolerance;
     float rotationDiskRadius;
     float chainLength;
+    float chainElongationFactor;
     float sledHeight;
     float sledWidth;
+    float sledWeight;
 
     float XcorrScaling;
     float YcorrScaling;
