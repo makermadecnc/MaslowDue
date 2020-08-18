@@ -107,22 +107,22 @@
 
   #define default_machineWidth        DEFAULT_X_MAX_TRAVEL
   #define default_machineHeight       DEFAULT_Y_MAX_TRAVEL
-  #define default_distBetweenMotors   (118.9375*25.4)
-  #define default_motorOffsetY        (22.75*25.4)
-  #define default_chainLength         (132.283*25.4)
+  #define default_distBetweenMotors   (2978.4)
+  #define default_motorOffsetY        (463)
+  #define default_chainLength         (3360)
   #define default_chainOverSprocket   (2)
-  #define default_chainSagCorrection  (59.504839)
+  #define default_chainSagCorrection  (0)
   #define default_leftChainTolerance  (0)
   #define default_rightChainTolerance (0)
-  #define default_rotationDiskRadius  (104.3)
-  #define default_chainElongationFactor (8.1E-6)
+  #define default_rotationDiskRadius  (139.1)
+  #define default_chainElongationFactor (5.1685e-6)
   #define default_sledHeight          (139)
   #define default_sledWidth           (310)
   #define default_SledWeight          (97.9)
-  #define default_XcorrScaling        (1.003922)
-  #define default_YcorrScaling        (1.002611)
+  #define default_XcorrScaling        (1.003922) // Simple kinematics only
+  #define default_YcorrScaling        (1.002611) // " " "
   #define default_ZTravelMin          (-0.5*25.4)
-  #define default_HomeChainLengths    (1755) // With the other default settings, this is 0,0
+  #define default_HomeChainLengths    (1790) // With the other default settings, this is 0,0
 
   #define default_SimpleKinematics    (0)
 

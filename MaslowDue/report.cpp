@@ -49,8 +49,8 @@ static void report_util_axis_values(float *axis_value) {
 static void report_util_setting_string(uint8_t n) {
   switch(n) {
 #ifdef MASLOWCNC
-    case GRBL_SLED_WEIGHT: printPgmString(PSTR(" (weight of sled with router, newtons)")); break;
-    case GRBL_CHAIN_ELONGATION_FACTOR: printPgmString(PSTR(" (chain elongation factor, mm/mm/Newton)")); break;
+    case GRBL_SLED_WEIGHT: printPgmString(PSTR(" (sled weight, newtons)")); break;
+    case GRBL_CHAIN_ELONGATION_FACTOR: printPgmString(PSTR(" (chain stretch factor, mm/mm/Newton)")); break;
     case GRBL_CHAIN_OVER_SPROCKET: printPgmString(PSTR(" (chain over sprocket?, boolean)")); break;
     case GRBL_MACHINE_WIDTH: printPgmString(PSTR(" (machine width, mm)")); break;
     case GRBL_MACHINE_HEIGHT: printPgmString(PSTR(" (machine height, mm)")); break;
@@ -61,11 +61,11 @@ static void report_util_setting_string(uint8_t n) {
     case GRBL_CHAIN_SAG_CORRECTION: printPgmString(PSTR(" (chain sag correction, percent)")); break;
     case GRBL_LEFT_CHAIN_TOLERANCE: printPgmString(PSTR(" (chain tolerance, left chain, percent)")); break;
     case GRBL_RIGHT_CHAIN_TOLERANCE: printPgmString(PSTR(" (chain tolerance, right chain, percent)")); break;
-    case GRBL_ROTATION_DISK_RADIUS: printPgmString(PSTR(" (rotation disk radius, mm)")); break;
-    case GRBL_CHAIN_LENGTH: printPgmString(PSTR(" (chain length, mm)")); break;
-    case GRBL_Z_TRAVEL_MIN: printPgmString(PSTR(" (Z-axis max distance above stock, mm)")); break;
+    case GRBL_ROTATION_DISK_RADIUS: printPgmString(PSTR(" (rotation radius, mm)")); break;
+    case GRBL_CHAIN_LENGTH: printPgmString(PSTR(" (full length of chain, mm)")); break;
+    case GRBL_Z_TRAVEL_MIN: printPgmString(PSTR(" (Z-axis minimum travel, mm)")); break;
     case GRBL_KINEMATICS_SIMPLE: printPgmString(PSTR(" (simple kinematics on?, boolean)")); break;
-    case GRBL_HOME_CHAIN_LENGTHS: printPgmString(PSTR(" (home position chain lengths, mm)")); break;
+    case GRBL_HOME_CHAIN_LENGTHS: printPgmString(PSTR(" (calibration chain length, mm)")); break;
 #endif
     default: break;
   }
@@ -233,7 +233,7 @@ void report_grbl_settings() {
     report_util_float_setting(GRBL_Z_TRAVEL_MIN,settings.zTravelMin,N_DECIMAL_SETTINGVALUE);
     report_util_uint8_setting(GRBL_KINEMATICS_SIMPLE,settings.simpleKinematics);
     report_util_float_setting(GRBL_SLED_WEIGHT, settings.sledWeight, N_DECIMAL_SETTINGVALUE);
-    report_util_float_setting(GRBL_CHAIN_ELONGATION_FACTOR, settings.chainElongationFactor, N_DECIMAL_SETTINGVALUE);
+    report_util_float_setting(GRBL_CHAIN_ELONGATION_FACTOR, settings.chainElongationFactor, 10);
     report_util_uint32_setting(GRBL_HOME_CHAIN_LENGTHS, settings.homeChainLengths);
 
     #endif
