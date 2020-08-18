@@ -35,8 +35,8 @@
 
   // Various cached pre-computed values.
   float _sprocketRadius = 10.1f;                      //sprocket radius
-  float _xCordOfMotor;
-  float _yCordOfMotor;
+  double _xCordOfMotor;
+  double _yCordOfMotor;
 
   // Cached between triangularForward computations to provide a good guess (performance).
   float _xLastPosition;
@@ -342,7 +342,7 @@ void system_convert_array_steps_to_mpos(float *position, int32_t *steps)
     int32_t x_steps, y_steps;
     system_convert_maslow_to_xy_steps(steps, &x_steps, &y_steps);
     position[X_AXIS] = (float)x_steps / settings.steps_per_mm[LEFT_MOTOR];
-    position[Y_AXIS] = (float)x_steps / settings.steps_per_mm[RIGHT_MOTOR];
+    position[Y_AXIS] = (float)y_steps / settings.steps_per_mm[RIGHT_MOTOR];
     position[Z_AXIS] = (float)steps[Z_AXIS] / settings.steps_per_mm[Z_AXIS];
   #else
     uint8_t idx;
@@ -558,12 +558,12 @@ uint8_t system_check_travel_limits(float *target)
   {
       // scale target (absolute position) by any correction factor
       // Use double math internally for faster computation.
-      double xxx = (double)xTarget * (double)settings.XcorrScaling;
-      double yyy = (double)yTarget * (double)settings.YcorrScaling;
+      double xxx = (double)xTarget; // * (double)settings.XcorrScaling;
+      double yyy = (double)yTarget; // * (double)settings.YcorrScaling;
 
       //Calculate motor axes length to the bit
-      double Motor1Distance = sqrt(pow((double)(-1*_xCordOfMotor) - (double)(xxx),2)+pow((double)(_yCordOfMotor) - (double(yyy)),2));
-      double Motor2Distance = sqrt(pow((double)   (_xCordOfMotor) - (double)(xxx),2)+pow((double)(_yCordOfMotor) - (double)(yyy),2));
+      double Motor1Distance = sqrt(pow((-1*_xCordOfMotor) - xxx,2)+pow(_yCordOfMotor - yyy,2));
+      double Motor2Distance = sqrt(pow((_xCordOfMotor) - xxx,2)+pow(_yCordOfMotor - yyy,2));
 
       //Set up variables
       double Chain1Angle = 0, Chain2Angle = 0;

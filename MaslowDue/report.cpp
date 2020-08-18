@@ -54,17 +54,17 @@ static void report_util_setting_string(uint8_t n) {
     case GRBL_CHAIN_OVER_SPROCKET: printPgmString(PSTR(" (chain over sprocket?, boolean)")); break;
     case GRBL_MACHINE_WIDTH: printPgmString(PSTR(" (machine width, mm)")); break;
     case GRBL_MACHINE_HEIGHT: printPgmString(PSTR(" (machine height, mm)")); break;
-    case GRBL_DIST_BETWEEN_MOTORS: printPgmString(PSTR(" (dist between motors, mm)")); break;
-    case GRBL_MOTOR_OFFSET_Y: printPgmString(PSTR(" (motor offset y, mm)")); break;
+    case GRBL_DIST_BETWEEN_MOTORS: printPgmString(PSTR(" (motor distance, mm)")); break;
+    case GRBL_MOTOR_OFFSET_Y: printPgmString(PSTR(" (motor height, mm)")); break;
     case GRBL_X_CORR_SCALING: printPgmString(PSTR(" (x corr scaling, percent)")); break;
     case GRBL_Y_CORR_SCALING: printPgmString(PSTR(" (y corr scaling, percent)")); break;
     case GRBL_CHAIN_SAG_CORRECTION: printPgmString(PSTR(" (chain sag correction, percent)")); break;
-    case GRBL_LEFT_CHAIN_TOLERANCE: printPgmString(PSTR(" (left chain tolerance, percent)")); break;
-    case GRBL_RIGHT_CHAIN_TOLERANCE: printPgmString(PSTR(" (right chain tolerance, percent)")); break;
+    case GRBL_LEFT_CHAIN_TOLERANCE: printPgmString(PSTR(" (chain tolerance, left chain, percent)")); break;
+    case GRBL_RIGHT_CHAIN_TOLERANCE: printPgmString(PSTR(" (chain tolerance, right chain, percent)")); break;
     case GRBL_ROTATION_DISK_RADIUS: printPgmString(PSTR(" (rotation disk radius, mm)")); break;
     case GRBL_CHAIN_LENGTH: printPgmString(PSTR(" (chain length, mm)")); break;
     case GRBL_Z_TRAVEL_MIN: printPgmString(PSTR(" (Z-axis max distance above stock, mm)")); break;
-    case GRBL_KINEMATICS_SIMPLE: printPgmString(PSTR(" (simple, faster, less accurate kinematics on?, boolean)")); break;
+    case GRBL_KINEMATICS_SIMPLE: printPgmString(PSTR(" (simple kinematics on?, boolean)")); break;
 #endif
     default: break;
   }

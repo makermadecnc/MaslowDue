@@ -110,7 +110,7 @@
   #define default_distBetweenMotors   (118.9375*25.4)
   #define default_motorOffsetY        (22.75*25.4)
   #define default_chainLength         (132.283*25.4)
-  #define default_chainOverSprocket   (0)
+  #define default_chainOverSprocket   (2)
   #define default_chainSagCorrection  (59.504839)
   #define default_leftChainTolerance  (0)
   #define default_rightChainTolerance (0)
