@@ -555,7 +555,6 @@ void limits_go_home(uint8_t cycle_mask)
       #else
           #ifdef MASLOWCNC
 
-              float aCl,bCl;    // set initial chain lengths to table center when $HOME
               void positionToChain(float ,float , float* , float* );
 
               x_axis.axis_Position = 0;
@@ -570,12 +569,10 @@ void limits_go_home(uint8_t cycle_mask)
               z_axis.target = 0;
               z_axis.target_PS = 0;
               z_axis.Integral = 0;
-              set_axis_position = 0;    // force to center of table -- its a Maslow thing
 
-              positionToChain((float)(set_axis_position), (float)(set_axis_position), &aCl, &bCl);
-              sys_position[LEFT_MOTOR] = (int32_t) lround(aCl * settings.steps_per_mm[LEFT_MOTOR]);
-              sys_position[RIGHT_MOTOR] = (int32_t) lround(bCl * settings.steps_per_mm[RIGHT_MOTOR]);
-              sys_position[Z_AXIS] = set_axis_position;
+              sys_position[LEFT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[LEFT_MOTOR]);
+              sys_position[RIGHT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[RIGHT_MOTOR]);
+              sys_position[Z_AXIS] = 0;
 
               store_current_machine_pos();    // reset all the way out to stored space
               sys.step_control = STEP_CONTROL_NORMAL_OP; // Return step control to normal operation.

@@ -97,7 +97,8 @@ settings_t settings;
     .YcorrScaling = default_YcorrScaling,
 
     .zTravelMin = default_ZTravelMin,
-    .simpleKinematics = default_SimpleKinematics };
+    .simpleKinematics = default_SimpleKinematics,
+    .homeChainLengths = default_HomeChainLengths };
 
 #else
 
@@ -406,6 +407,7 @@ uint8_t settings_store_global_setting(uint8_t parameter, float value) {
         case GRBL_KINEMATICS_SIMPLE: settings.simpleKinematics = int_value; break;
         case GRBL_SLED_WEIGHT: settings.sledWeight = (float)value; break;
         case GRBL_CHAIN_ELONGATION_FACTOR: settings.chainElongationFactor = (float)value; break;
+        case GRBL_HOME_CHAIN_LENGTHS: settings.homeChainLengths = (uint32_t)value; break;
       #endif
 
       default:

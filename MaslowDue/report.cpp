@@ -65,6 +65,7 @@ static void report_util_setting_string(uint8_t n) {
     case GRBL_CHAIN_LENGTH: printPgmString(PSTR(" (chain length, mm)")); break;
     case GRBL_Z_TRAVEL_MIN: printPgmString(PSTR(" (Z-axis max distance above stock, mm)")); break;
     case GRBL_KINEMATICS_SIMPLE: printPgmString(PSTR(" (simple kinematics on?, boolean)")); break;
+    case GRBL_HOME_CHAIN_LENGTHS: printPgmString(PSTR(" (home position chain lengths, mm)")); break;
 #endif
     default: break;
   }
@@ -233,6 +234,7 @@ void report_grbl_settings() {
     report_util_uint8_setting(GRBL_KINEMATICS_SIMPLE,settings.simpleKinematics);
     report_util_float_setting(GRBL_SLED_WEIGHT, settings.sledWeight, N_DECIMAL_SETTINGVALUE);
     report_util_float_setting(GRBL_CHAIN_ELONGATION_FACTOR, settings.chainElongationFactor, N_DECIMAL_SETTINGVALUE);
+    report_util_uint32_setting(GRBL_HOME_CHAIN_LENGTHS, settings.homeChainLengths);
 
     #endif
 

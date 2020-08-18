@@ -154,6 +154,7 @@ typedef struct {
     float YcorrScaling;
     float zTravelMin;
     uint32_t simpleKinematics;
+    uint32_t homeChainLengths;
   #endif
 
 
