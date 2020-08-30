@@ -134,24 +134,29 @@ typedef struct {
     uint32_t z_PID_Ki;
     uint32_t z_PID_Kd;
     uint32_t z_PID_Imax;
-    
+
     uint32_t chainOverSprocket;
-    float machineWidth;   /* Maslow specific settings */
-    float machineHeight;
     float distBetweenMotors;
     float motorOffsetY;
+    float machineWidth;   /* Maslow specific settings */
+    float machineHeight;
     float chainSagCorrection;
     float leftChainTolerance;
     float rightChainTolerance;
     float rotationDiskRadius;
     float chainLength;
+    float chainElongationFactor;
     float sledHeight;
-    float sledWidth;  
+    float sledWidth;
+    float sledWeight;
 
     float XcorrScaling;
     float YcorrScaling;
+    float zTravelMin;
+    uint32_t simpleKinematics;
+    uint32_t homeChainLengths;
   #endif
-    
+
 
 } settings_t;
 extern settings_t settings;
