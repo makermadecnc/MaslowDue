@@ -2,6 +2,16 @@
 
 ### This is firmware to control a Maslow CNC-type machine.
 
+Quick Installation:
+
+- Download this repository (above)
+- If you are using the M2 shield (3 heatsinks), no changes are required.
+- If you have a shield with only 2 heatsinks, change from v2 to v1 at the top of `MaslowDue.h`.
+- Open the `.ino` file in the Arduino IDE.
+- Choose Maslow Due from the board manager ([help](https://www.arduino.cc/en/Guide/ArduinoDue))
+- Compile and run to flash the Arduino
+- Go use Makerverse ;) https://github.com/makermadecnc/makerverse
+
 .....
 
 _:warning: Making your own shield can be cumbersome and expensive. Our partners at [Maker Made](https://makermade.com/) offer both [a complete kit](https://makermade.com/product/m2-automated-cutting-machine-kit/), and [just the shield](https://makermade.com/product/complete-m2-due-board-with-case/) for those interested._
@@ -89,7 +99,7 @@ $102=735.000 (z, step/mm)
 ```
 These parameters make the conversion from encoder-counts to mm in the DUE configuration.
 
-**Note:** _if the direction of a motor needs to be reversed, the motor direction can be set with the GRBL parameter $3 - *Direction Mask*:    
+**Note:** _if the direction of a motor needs to be reversed, the motor direction can be set with the GRBL parameter $3 - *Direction Mask*:
 ```
 $3 = 0  (Standard configuration)
 $3 = 1  (Reverse LEFT motor)
@@ -134,7 +144,7 @@ Gerbers and Schematics can be found on this repo under [Electronics](https://git
 Peace!
 
 ___
-Let us know that this work has been helpful to you.  Any proceeds will be used to offset expenses and further the art. 
+Let us know that this work has been helpful to you.  Any proceeds will be used to offset expenses and further the art.
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GLAHSMYYJJJAU&source=url)
 
 ### Authors
