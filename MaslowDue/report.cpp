@@ -63,7 +63,7 @@ static void report_util_setting_string(uint8_t n) {
     case GRBL_RIGHT_CHAIN_TOLERANCE: printPgmString(PSTR(" (chain tolerance, right chain, percent)")); break;
     case GRBL_ROTATION_DISK_RADIUS: printPgmString(PSTR(" (rotation radius, mm)")); break;
     case GRBL_CHAIN_LENGTH: printPgmString(PSTR(" (full length of chain, mm)")); break;
-    case GRBL_Z_TRAVEL_MIN: printPgmString(PSTR(" (Z-axis minimum travel, mm)")); break;
+    case GRBL_Z_TRAVEL_MIN: printPgmString(PSTR(" (Z-axis minimum travel safe distance, mm)")); break;
     case GRBL_KINEMATICS_SIMPLE: printPgmString(PSTR(" (simple kinematics on?, boolean)")); break;
     case GRBL_HOME_CHAIN_LENGTHS: printPgmString(PSTR(" (calibration chain length, mm)")); break;
 #endif

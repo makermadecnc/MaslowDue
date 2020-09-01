@@ -383,7 +383,8 @@ uint8_t system_check_travel_limits(float *target)
     #elif defined(MASLOWCNC)
       if (idx == Z_AXIS) {
         // Maslow has a min Z setting in addition to the max Z.
-        if (target[idx] < -settings.zTravelMin || target[idx] > -settings.max_travel[idx]) { return(true); }
+        // Max travel is stored negative, so no need for inverting sign.
+        if (target[idx] > settings.zTravelMin || target[idx] < settings.max_travel[idx]) { return(true); }
       } else {
         // Maslow homes at the center of the stock. The max travel setting refers to total size.
         float ht = settings.max_travel[idx] / -2.0f;
