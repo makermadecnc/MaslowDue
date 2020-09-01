@@ -121,7 +121,7 @@
   #define default_SledWeight          (97.9)
   #define default_XcorrScaling        (1.003922) // Simple kinematics only
   #define default_YcorrScaling        (1.002611) // " " "
-  #define default_ZTravelMin          (-0.5*25.4)
+  #define default_ZTravelMin          (0.5*25.4)
   #define default_HomeChainLengths    (1790) // With the other default settings, this is 0,0
 
   #define default_SimpleKinematics    (0)
