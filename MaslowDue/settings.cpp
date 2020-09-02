@@ -272,7 +272,10 @@ uint8_t read_global_settings() {
 
 // A helper method to set settings from command line
 uint8_t settings_store_global_setting(uint8_t parameter, float value) {
+  #ifndef MASLOWCNC
+  // Maslow needs negative chain tolerance values.
   if (value < 0.0) { return(STATUS_NEGATIVE_VALUE); }
+  #endif
   if (parameter >= AXIS_SETTINGS_START_VAL) {
     // Store axis configuration. Axis numbering sequence set by AXIS_SETTING defines.
     // NOTE: Ensure the setting index corresponds to the report.c settings printout.

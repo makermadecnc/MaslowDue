@@ -10,6 +10,7 @@ Quick Installation:
 - Open the `.ino` file in the Arduino IDE.
 - Choose Maslow Due from the board manager ([help](https://www.arduino.cc/en/Guide/ArduinoDue))
 - Compile and run to flash the Arduino
+- Baud rate is 38400
 - Go use Makerverse ;) https://github.com/makermadecnc/makerverse
 
 .....
