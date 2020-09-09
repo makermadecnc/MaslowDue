@@ -48,9 +48,9 @@
 
 // Define command actions for within execution-type modal groups (motion, stopping, non-modal). Used
 // internally by the parser to know which command to execute.
-// NOTE: Some macro values are assigned specific values to make g-code state reporting and parsing 
+// NOTE: Some macro values are assigned specific values to make g-code state reporting and parsing
 // compile a litte smaller. Necessary due to being completely out of flash on the 328p. Although not
-// ideal, just be careful with values that state 'do not alter' and check both report.c and gcode.c 
+// ideal, just be careful with values that state 'do not alter' and check both report.c and gcode.c
 // to see how they are used, if you need to alter them.
 
 // Modal Group G0: Non-modal actions
@@ -59,6 +59,7 @@
 #define NON_MODAL_SET_COORDINATE_DATA 10 // G10 (Do not alter value)
 #define NON_MODAL_GO_HOME_0 28 // G28 (Do not alter value)
 #define NON_MODAL_SET_HOME_0 38 // G28.1 (Do not alter value)
+#define NON_MODAL_SET_HOME_AXIS 58 // G28.3 (Do not alter value)
 #define NON_MODAL_GO_HOME_1 30 // G30 (Do not alter value)
 #define NON_MODAL_SET_HOME_1 40 // G30.1 (Do not alter value)
 #define NON_MODAL_ABSOLUTE_OVERRIDE 53 // G53 (Do not alter value)
@@ -161,7 +162,7 @@
 #define GC_PROBE_FAIL_INIT  GC_UPDATE_POS_NONE
 #define GC_PROBE_FAIL_END   GC_UPDATE_POS_TARGET
 #ifdef SET_CHECK_MODE_PROBE_TO_START
-  #define GC_PROBE_CHECK_MODE   GC_UPDATE_POS_NONE  
+  #define GC_PROBE_CHECK_MODE   GC_UPDATE_POS_NONE
 #else
   #define GC_PROBE_CHECK_MODE   GC_UPDATE_POS_TARGET
 #endif

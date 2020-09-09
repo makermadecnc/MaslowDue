@@ -573,7 +573,6 @@ void limits_go_home(uint8_t cycle_mask)
 
               sys_position[LEFT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[LEFT_MOTOR]);
               sys_position[RIGHT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[RIGHT_MOTOR]);
-              sys_position[Z_AXIS] = set_axis_position;
 
               store_current_machine_pos();    // reset all the way out to stored space
               sys.step_control = STEP_CONTROL_NORMAL_OP; // Return step control to normal operation.
