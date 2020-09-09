@@ -618,10 +618,18 @@ uint8_t gc_execute_line(char *line)
           }
           break;
         case NON_MODAL_SET_HOME_AXIS: // G28.3
-          if (!(axis_words & (1<<Z_AXIS)) || (axis_words & (1<<X_AXIS)) || (axis_words & (1<<Y_AXIS)) || gc_block.values.xyz[Z_AXIS] != 0) {
-            // Only Z-axis === 0 is supported.
-            FAIL(STATUS_GCODE_UNSUPPORTED_COMMAND);
-          }
+          if (!axis_words) { FAIL(STATUS_GCODE_NO_AXIS_WORDS); } // [No axis words]
+          // May only set zero values via G28.3
+          // if ((axis_words & (1<<Z_AXIS)) && gc_block.values.xyz[Z_AXIS] != 0) {
+          //   FAIL(STATUS_GCODE_UNSUPPORTED_COMMAND);
+          // }
+          // if ((axis_words & (1<<X_AXIS)) && gc_block.values.xyz[X_AXIS] != 0) {
+          //   FAIL(STATUS_GCODE_UNSUPPORTED_COMMAND);
+          // }
+          // if ((axis_words & (1<<Y_AXIS)) && gc_block.values.xyz[Y_AXIS] != 0) {
+          //   FAIL(STATUS_GCODE_UNSUPPORTED_COMMAND);
+          // }
+          axis_command = AXIS_COMMAND_NON_MODAL; // No motion.
           break;
         case NON_MODAL_SET_HOME_0: // G28.1
         case NON_MODAL_SET_HOME_1: // G30.1
@@ -1025,7 +1033,8 @@ uint8_t gc_execute_line(char *line)
       settings_write_coord_data(SETTING_INDEX_G30,gc_state.position);
       break;
     case NON_MODAL_SET_HOME_AXIS:
-      sys_position[Z_AXIS] = 0;
+      // Home only those axes which were specified.
+      mc_homing_cycle(axis_words);
       break;
     case NON_MODAL_SET_COORDINATE_OFFSET:
       memcpy(gc_state.coord_offset,gc_block.values.xyz,sizeof(gc_block.values.xyz));

@@ -525,65 +525,74 @@ void limits_go_home(uint8_t cycle_mask)
   // set up pull-off maneuver from axes limit switches that have been homed. This provides
   // some initial clearance off the switches and should also help prevent them from falsely
   // triggering when hard limits are enabled or when more than one axes shares a limit pin.
-  int32_t set_axis_position;
-  // Set machine positions for homed limit switches. Don't update non-homed axes.
-  for (idx=0; idx<N_AXIS; idx++) {
-    // NOTE: settings.max_travel[] is stored as a negative value.
-    if (cycle_mask & bit(idx)) {
-      #ifdef HOMING_FORCE_SET_ORIGIN
-        set_axis_position = 0;
-      #else
-        if ( bit_istrue(settings.homing_dir_mask,bit(idx)) ) {
-          set_axis_position = lround((settings.max_travel[idx]+settings.homing_pulloff)*settings.steps_per_mm[idx]);
-        } else {
-          set_axis_position = lround(-settings.homing_pulloff*settings.steps_per_mm[idx]);
-        }
-      #endif
 
-      #ifdef COREXY
-        if (idx==X_AXIS) {
-          int32_t off_axis_position = system_convert_corexy_to_y_axis_steps(sys_position);
-          sys_position[A_MOTOR] = set_axis_position + off_axis_position;
-          sys_position[B_MOTOR] = set_axis_position - off_axis_position;
-        } else if (idx==Y_AXIS) {
-          int32_t off_axis_position = system_convert_corexy_to_x_axis_steps(sys_position);
-          sys_position[A_MOTOR] = off_axis_position + set_axis_position;
-          sys_position[B_MOTOR] = off_axis_position - set_axis_position;
-        } else {
-          sys_position[idx] = set_axis_position;
-        }
-      #else
-          #ifdef MASLOWCNC
+  #ifdef MASLOWCNC
+      void positionToChain(float ,float , float* , float* );
 
-              void positionToChain(float ,float , float* , float* );
+      bool xAxis = cycle_mask & bit(X_AXIS);
+      bool yAxis = cycle_mask & bit(Y_AXIS);
+      bool zAxis = cycle_mask & bit(Z_AXIS);
+      if (xAxis) {
+        x_axis.axis_Position = 0;
+        x_axis.target = 0;
+        x_axis.target_PS = 0;
+        x_axis.Integral = 0;
+      }
+      if (yAxis) {
+        y_axis.axis_Position = 0;
+        y_axis.target = 0;
+        y_axis.target_PS = 0;
+        y_axis.Integral = 0;
+      }
+      if (xAxis || yAxis) {
+        // Maslow MUST home the x & y at the same time; homing is actually just resetting chain lengths to the stored value.
+        sys_position[LEFT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[LEFT_MOTOR]);
+        sys_position[RIGHT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[RIGHT_MOTOR]);
+      }
+      if (zAxis) {
+        z_axis.axis_Position = 0;
+        z_axis.target = 0;
+        z_axis.target_PS = 0;
+        z_axis.Integral = 0;
+        sys_position[Z_AXIS] = 0;
+      }
 
-              x_axis.axis_Position = 0;
-              x_axis.target = 0;
-              x_axis.target_PS = 0;
-              x_axis.Integral = 0;
-              y_axis.axis_Position = 0;
-              y_axis.target = 0;
-              y_axis.target_PS = 0;
-              y_axis.Integral = 0;
-              z_axis.axis_Position = 0;
-              z_axis.target = 0;
-              z_axis.target_PS = 0;
-              z_axis.Integral = 0;
-              set_axis_position = 0;    // force to center of table -- its a Maslow thing
-
-              sys_position[LEFT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[LEFT_MOTOR]);
-              sys_position[RIGHT_MOTOR] = (int32_t) lround(settings.homeChainLengths * settings.steps_per_mm[RIGHT_MOTOR]);
-
-              store_current_machine_pos();    // reset all the way out to stored space
-              sys.step_control = STEP_CONTROL_NORMAL_OP; // Return step control to normal operation.
-              return;
+      store_current_machine_pos();    // reset all the way out to stored space
+  #else
+      int32_t set_axis_position;
+      // Set machine positions for homed limit switches. Don't update non-homed axes.
+      for (idx=0; idx<N_AXIS; idx++) {
+        // NOTE: settings.max_travel[] is stored as a negative value.
+        if (cycle_mask & bit(idx)) {
+          #ifdef HOMING_FORCE_SET_ORIGIN
+            set_axis_position = 0;
           #else
-            sys_position[idx] = set_axis_position;
+            if ( bit_istrue(settings.homing_dir_mask,bit(idx)) ) {
+              set_axis_position = lround((settings.max_travel[idx]+settings.homing_pulloff)*settings.steps_per_mm[idx]);
+            } else {
+              set_axis_position = lround(-settings.homing_pulloff*settings.steps_per_mm[idx]);
+            }
           #endif
-      #endif
 
-    }
-  }
+          #ifdef COREXY
+            if (idx==X_AXIS) {
+              int32_t off_axis_position = system_convert_corexy_to_y_axis_steps(sys_position);
+              sys_position[A_MOTOR] = set_axis_position + off_axis_position;
+              sys_position[B_MOTOR] = set_axis_position - off_axis_position;
+            } else if (idx==Y_AXIS) {
+              int32_t off_axis_position = system_convert_corexy_to_x_axis_steps(sys_position);
+              sys_position[A_MOTOR] = off_axis_position + set_axis_position;
+              sys_position[B_MOTOR] = off_axis_position - set_axis_position;
+            } else {
+              sys_position[idx] = set_axis_position;
+            }
+          #else
+              sys_position[idx] = set_axis_position;
+          #endif
+
+        }
+      }
+  #endif
   sys.step_control = STEP_CONTROL_NORMAL_OP; // Return step control to normal operation.
 }
 
