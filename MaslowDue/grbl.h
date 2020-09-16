@@ -35,7 +35,7 @@
 #define MASLOWCNC // Default disabled. Uncomment to enable.
 
 #ifdef MASLOWCNC
-  #define GRBL_VERSION_BUILD "20200909.MaslowDue"
+  #define GRBL_VERSION_BUILD "20200915.MaslowDue"
   #include "Arduino.h"
 
   // Matches Maslow Classic:

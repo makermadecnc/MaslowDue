@@ -25,7 +25,7 @@
 
   #define KINEMATICS_MAX_GUESS  200
   // #define KINEMATICS_DBG 1 // output to serial while computing kinematics.
-  #define KINEMATICS_MAX_ERR    0.1 // maximum error value in forward kinematics. bigger = faster.
+  #define KINEMATICS_MAX_ERR    0.01 // maximum error value in forward kinematics. bigger = faster.
 
   // Main kinematics functions.
   void  triangularInverse(float xTarget, float yTarget, float* aChainLength, float* bChainLength);
