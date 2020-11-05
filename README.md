@@ -4,14 +4,27 @@
 
 Quick Installation:
 
-- Download this repository (above)
+- Download this repository (green button, above).
 - If you are using the M2 shield (3 heatsinks), no changes are required.
 - If you have a shield with only 2 heatsinks, change from v2 to v1 at the top of `MaslowDue.h`.
 - Open the `.ino` file in the Arduino IDE.
-- Choose Maslow Due from the board manager ([help](https://www.arduino.cc/en/Guide/ArduinoDue))
-- Compile and run to flash the Arduino
-- Baud rate is 38400
-- Go use Makerverse ;) https://github.com/makermadecnc/makerverse
+- Choose `Arduino Due` from `Tools` -> `Board: ...` (you might need to [install it](https://www.arduino.cc/en/Guide/ArduinoDue)).
+- Choose the correct port from `Tools` -> `Port: ...` (it will likely say `Arduino Due (Programming Port)` in the menu).
+- `Upload` the firmware to the Arduino (find it in the `Sketch` menu).
+- You should see `Done uploading` and `Verify successful` near the bottom of the Arduino IDE.
+
+Before moving on, open the `Serial Monitor` in the Arduino IDE and select a baud rate of `38400`. You should immediately see something like this (though the version number at the top will differ, it should be higher than the one shown here):
+
+```
+[VER:1.1g.20200909.MaslowDue:]
+[OPT:VNM+H,35,255]
+
+Grbl 1.1g ['$' for help]
+```
+
+If you see nothing, then your Arduino is not responding. You might have the wrong port or board. If you see gibberish (random, non-english characters), you have the wrong baud rate.
+
+Otherwise, you're ready to [use Makerverse](http://makerverse.com).
 
 .....
 
