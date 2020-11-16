@@ -4,10 +4,13 @@
 
 Quick Installation:
 
-- Download this repository (green button, above).
-- If you are using the M2 shield (3 heatsinks), no changes are required.
+_You can optionally watch a [video of the following steps](https://www.youtube.com/watch?v=WoopPgRBfx4)_.
+
+- Download this repository (green button, above) and unzip it somewhere convenient.
+- Make sure the shield is attached to your Arduino Due.
+- If you are using the M2 shield (3 heatsinks), no changes to any downloaded files are required.
 - If you have a shield with only 2 heatsinks, change from v2 to v1 at the top of `MaslowDue.h`.
-- Open the `.ino` file in the Arduino IDE.
+- Open the `.ino` file (from the unzipped folder) in the Arduino IDE.
 - Choose `Arduino Due` from `Tools` -> `Board: ...` (you might need to [install it](https://www.arduino.cc/en/Guide/ArduinoDue)).
 - Choose the correct port from `Tools` -> `Port: ...` (it will likely say `Arduino Due (Programming Port)` in the menu).
 - `Upload` the firmware to the Arduino (find it in the `Sketch` menu).
